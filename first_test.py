@@ -5,6 +5,6 @@ with sync_playwright() as p:
         headless=False
     )
     page = browser.new_page()
-    page.goto("https://www.google.com")
+    page.goto("https://www.comparajogos.com.br/")
     print("Page title:", page.title())
     browser.close()
