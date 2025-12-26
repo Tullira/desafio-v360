@@ -1,0 +1,1 @@
+comparaJogosUrl = "https://www.comparajogos.com.br/"
