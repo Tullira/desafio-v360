@@ -20,18 +20,23 @@ with sync_playwright() as p:
     for i in range(cards.count()):
         card = cards.nth(i)
         link = card.locator("a")
-        # print(link.get_attribute("href"))
     #
     #
-    # 1.1 Entre na página dele
+    # 1.1 Extraia o nome dele 
+        element = card.locator(".vertical-wrap")
+        name = element.text_content().strip()
+        print(name)
+    #
+    #
+    # 1.2 Entre na página dele
         p = browser.new_page(base_url=comparaJogosUrl)
         url = link.get_attribute("href")
-        if url is not None:
-            p.goto(url)
-        p.close()
-    # 1.2 Extraia o nome dele 
+        if url is None:
+            p.close()
+        p.goto(url)
     # 1.3 Para preço do jogo na listagem:
     # 1.3.1 Extraia o valor no cartão
     # 1.3.2 Extraia o valor no pix
     # 2. Armazenar valores em uma planilha ou json
+        p.close()
     browser.close()
