@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright
-from ..utils.comparajogos import comparaJogosUrl
-
+# from ..utils.comparajogos import comparaJogosUrl
+comparaJogosUrl = "https://www.comparajogos.com.br"
 with sync_playwright() as p:
     browser = p.chromium.launch(
         headless=False
@@ -16,15 +16,19 @@ with sync_playwright() as p:
     #
     # 1. Para cada jogo em Populares da Semana
     cards = section.locator("div.min-w-44.flex.flex-col.rounded-md.shadow-lg") # Localizando o card de jogo
-    print("Contagem de cards: ", cards.count())
+    # print("Contagem de cards: ", cards.count())
     for i in range(cards.count()):
         card = cards.nth(i)
-        links = card.locator("a")
-        print(links.nth(0).get_attribute("href"))
+        link = card.locator("a")
+        # print(link.get_attribute("href"))
     #
     #
     # 1.1 Entre na página dele
-
+        p = browser.new_page(base_url=comparaJogosUrl)
+        url = link.get_attribute("href")
+        if url is not None:
+            p.goto(url)
+        p.close()
     # 1.2 Extraia o nome dele 
     # 1.3 Para preço do jogo na listagem:
     # 1.3.1 Extraia o valor no cartão
