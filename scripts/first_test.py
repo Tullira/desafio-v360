@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright
 # from ..utils.comparajogos import comparaJogosUrl
+import time
 comparaJogosUrl = "https://www.comparajogos.com.br"
 with sync_playwright() as p:
     browser = p.chromium.launch(
@@ -33,6 +34,15 @@ with sync_playwright() as p:
         # TODO: Caso tenha, clicar antes no botão de "mostrar mais"
         offersSection = offersTitle.locator("xpath=ancestor::div[contains(@class,'py-5') and contains(@class,'scroll-mt-14')]").first
         offersCards = offersSection.locator("div.relative.rounded-lg.my-2.p-1.bg-sidebar-accent")
+        buttons = offersSection.locator("button")
+        #
+        #
+        if buttons.count() > 3: # Isso significa que existe um botão de "Ver mais"
+            viewMoreButton = offersSection.locator("button.cursor-pointer")
+            viewMoreButton.click()
+            time.sleep(2)
+        #
+        #
         # 1.3 Para cada preço do jogo na listagem:
         for j in range (offersCards.count()):
             offerCard = offersCards.nth(j)
