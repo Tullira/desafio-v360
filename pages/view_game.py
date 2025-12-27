@@ -1,5 +1,5 @@
 from playwright.sync_api import Page, expect
-
+import time
 class GamePage:
 
     def __init__(self, page: Page):
@@ -8,8 +8,17 @@ class GamePage:
         self.offersSection = self.offersTitle.locator("xpath=ancestor::div[contains(@class,'py-5') and contains(@class,'scroll-mt-14')]").first
         self.offersCards = self.offersSection.locator("div.relative.rounded-lg.my-2.p-1.bg-sidebar-accent")
         self.buttons = self.offersSection.locator("button")
-        self.viewMoreButton = self.offersSection.locator("button.cursor-pointer")
-
+    
+    def get_offers_cards(self):
+        return self.offersCards
+    
+    def check_view_more(self):
+        if self.buttons.count() > 3:
+            viewMoreButton = self.offersSection.locator("button.cursor-pointer")
+            viewMoreButton.click()
+            time.sleep(2)
+        return
+    
     def get_store_name(offerCard):
         storeName = offerCard.locator("div[title]").first.get_attribute("title")
         print(storeName)
@@ -34,3 +43,4 @@ class GamePage:
             pixSection = pixLocator.locator("xpath=ancestor::div[contains(@class, 'text-green-800')]")
             pixValue = pixSection.locator("div.inline-block.w-14").inner_text()
         print("Pix: ", pixValue)
+        return
