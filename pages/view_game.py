@@ -19,12 +19,12 @@ class GamePage:
             time.sleep(2)
         return
     
-    def get_store_name(offerCard):
+    def get_store_name(self, offerCard):
         storeName = offerCard.locator("div[title]").first.get_attribute("title")
         print(storeName)
         return
     
-    def get_credit_offer(offerCard):
+    def get_credit_offer(self, offerCard):
         # Extrair o valor no cartão
         credit = offerCard.locator("div.pb-1.text-green-800")
         cardValue = credit.locator("div.inline-block.w-14").inner_text()
@@ -34,7 +34,7 @@ class GamePage:
         print("Cartão:", cardValue, "  Parcela:", installmentValue)
         return 
     
-    def get_pix_offer(offerCard):
+    def get_pix_offer(self, offerCard):
         pixValue = "Não aceita" # Deixar vazio como padrão para lojas que não aceitam
         offers = offerCard.locator("div.text-green-800")
         credit = offerCard.locator("div.pb-1.text-green-800")
