@@ -39,24 +39,11 @@ with sync_playwright() as p:
         for j in range (gamePage.get_offers_cards().count()):
             offerCard = gamePage.get_offers_cards().nth(j)
             # 1.3.1 Extraia o nome da loja
-            storeName = offerCard.locator("div[title]").first.get_attribute("title")
-            print(storeName)
-            offers = offerCard.locator("div.text-green-800")
-            # 1.3.2 Extraia o valor no cartão
-            credit = offerCard.locator("div.pb-1.text-green-800")
-            cardValue = credit.locator("div.inline-block.w-14").inner_text()
-            installmentValue = credit.locator("small.ml-2.text-gray-500").inner_text()
-            if installmentValue == "cartão": # Tratamento de dado caso não aceite dividir em parcelas
-                installmentValue = f'1 x {cardValue}'
-            print("Cartão:", cardValue, "  Parcela:", installmentValue)
+            gamePage.get_store_name(offerCard) # Printa nome da loja 
+            # 1.3.2 Extraia o valor no crédito
+            gamePage.get_credit_offer(offerCard) # Printa valor no crédito
             # 1.3.3 Extraia o valor no pix
-            pixValue = "Não aceita" # Deixar vazio como padrão para lojas que não aceitam
-            if offers.count() > credit.count(): # Isso significa que tem a opção de pix
-                pixLocator = offerCard.locator("small", has_text="pix")
-                pixSection = pixLocator.locator("xpath=ancestor::div[contains(@class, 'text-green-800')]")
-                pixValue = pixSection.locator("div.inline-block.w-14").inner_text()
-            print("Pix: ", pixValue)
-            print("---")
+            gamePage.get_pix_offer(offerCard)
         print("================")
         # TODO: Fazer mesma coisa para jogos USADOS
         # 2. Armazenar valores em uma planilha ou json
