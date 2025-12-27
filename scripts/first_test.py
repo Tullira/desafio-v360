@@ -12,31 +12,46 @@ with sync_playwright() as p:
     # 0. Encontrar a seção de Populares da Semana
     title = page.locator("span", has_text="Populares da Semana") # Localiza o título de Populares da Semana
     section = title.locator("xpath=ancestor::div[contains(@class,'col-span')]").first # Localiza a div em que esse título se encontra
-    #
-    #
     # 1. Para cada jogo em Populares da Semana
     cards = section.locator("div.min-w-44.flex.flex-col.rounded-md.shadow-lg") # Localizando o card de jogo
-    # print("Contagem de cards: ", cards.count())
     for i in range(cards.count()):
         card = cards.nth(i)
         link = card.locator("a")
-    #
-    #
-    # 1.1 Extraia o nome dele 
+        # 1.1 Extraia o nome dele 
         element = card.locator(".vertical-wrap")
         name = element.text_content().strip()
         print(name)
-    #
-    #
-    # 1.2 Entre na página dele
+        # 1.2 Entre na página dele
         p = browser.new_page(base_url=comparaJogosUrl)
         url = link.get_attribute("href")
         if url is None:
             p.close()
         p.goto(url)
-    # 1.3 Para preço do jogo na listagem:
-    # 1.3.1 Extraia o valor no cartão
-    # 1.3.2 Extraia o valor no pix
-    # 2. Armazenar valores em uma planilha ou json
+        #
+        #
+        offersTitle = p.locator("span", has_text="Ofertas")
+        # TODO: Caso tenha, clicar antes no botão de "mostrar mais"
+        offersSection = offersTitle.locator("xpath=ancestor::div[contains(@class,'py-5') and contains(@class,'scroll-mt-14')]").first
+        offersCards = offersSection.locator("div.relative.rounded-lg.my-2.p-1.bg-sidebar-accent")
+        # 1.3 Para cada preço do jogo na listagem:
+        for j in range (offersCards.count()):
+            offerCard = offersCards.nth(j)
+            # 1.3.1 Extraia o nome da loja
+            storeName = offerCard.locator("div[title]").first.get_attribute("title")
+            print(storeName)
+            # 1.3.2 Extraia o valor no cartão
+            credit = offerCard.locator("div.pb-1.text-green-800")
+            cardValue = credit.locator("div.inline-block.w-14").inner_text()
+            installmentValue = credit.locator("small.ml-2.text-gray-500").inner_text()
+            if installmentValue == "cartão": # Tratamento de dado caso não aceite dividir em parcelas
+                installmentValue = f'1 x {cardValue}'
+            print("Cartão:", cardValue, "  Parcela:", installmentValue)
+            # 1.3.3 Extraia o valor no pix
+            # pix = offerCard.locator("div", has_text="pix")
+            # pixValue = pix.inner_text()
+            # print("Pix: ", pixValue)
+        print("================")
+        # TODO: Fazer mesma coisa para jogos USADOS
+        # 2. Armazenar valores em uma planilha ou json
         p.close()
     browser.close()
