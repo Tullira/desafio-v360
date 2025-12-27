@@ -39,6 +39,7 @@ with sync_playwright() as p:
             # 1.3.1 Extraia o nome da loja
             storeName = offerCard.locator("div[title]").first.get_attribute("title")
             print(storeName)
+            offers = offerCard.locator("div.text-green-800")
             # 1.3.2 Extraia o valor no cartão
             credit = offerCard.locator("div.pb-1.text-green-800")
             cardValue = credit.locator("div.inline-block.w-14").inner_text()
@@ -47,9 +48,13 @@ with sync_playwright() as p:
                 installmentValue = f'1 x {cardValue}'
             print("Cartão:", cardValue, "  Parcela:", installmentValue)
             # 1.3.3 Extraia o valor no pix
-            # pix = offerCard.locator("div", has_text="pix")
-            # pixValue = pix.inner_text()
-            # print("Pix: ", pixValue)
+            pixValue = "Não aceita" # Deixar vazio como padrão para lojas que não aceitam
+            if offers.count() > credit.count(): # Isso significa que tem a opção de pix
+                pixLocator = offerCard.locator("small", has_text="pix")
+                pixSection = pixLocator.locator("xpath=ancestor::div[contains(@class, 'text-green-800')]")
+                pixValue = pixSection.locator("div.inline-block.w-14").inner_text()
+            print("Pix: ", pixValue)
+            print("---")
         print("================")
         # TODO: Fazer mesma coisa para jogos USADOS
         # 2. Armazenar valores em uma planilha ou json
