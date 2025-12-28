@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright
 from utils.comparajogos import comparaJogosUrl
-from pages.view_game import GamePage
+from pages.game_page import GamePage
 
 
 with sync_playwright() as p:
