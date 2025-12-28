@@ -17,10 +17,9 @@ with sync_playwright() as p:
 
     for i in range(homePage.get_cards().count()):
         card = homePage.get_cards().nth(i)
-        link = card.locator("a")
+        url = homePage.get_card_url(card)
         homePage.get_game_name(card) # 1. Extraia o nome do jogo
         p = browser.new_page(base_url=comparaJogosUrl)
-        url = link.get_attribute("href")
         if url is None:
             p.close()
         p.goto(url)  # 2. Visite a página do jogo

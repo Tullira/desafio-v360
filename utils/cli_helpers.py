@@ -7,6 +7,6 @@ def ask_running_option():
     if option == 1:
         runOption = False
     else:
-        runOption = False
-        
+        runOption = True
+
     return runOption

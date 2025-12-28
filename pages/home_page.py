@@ -15,3 +15,8 @@ class HomePage:
     
     def get_cards(self):
         return self.popularCards
+
+    def get_card_url(self, card):
+        link = card.locator("a")
+        url = link.get_attribute("href")
+        return url
