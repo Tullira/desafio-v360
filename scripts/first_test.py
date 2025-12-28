@@ -1,11 +1,20 @@
 from playwright.sync_api import sync_playwright
-# from ..utils.comparajogos import comparaJogosUrl
+from utils.comparajogos import comparaJogosUrl
 from pages.view_game import GamePage
-import time
-comparaJogosUrl = "https://www.comparajogos.com.br"
+
+
 with sync_playwright() as p:
+    option = int(input("Qual tipo de execução você deseja?\n1 - Headed\n2 - Headless\n"))
+    while (option != 1 and option != 2):
+        print("Opção inválida")
+        option = int(input("Qual tipo de execução você deseja?\n1 - Headed\n2 - Headless\n"))
+
+    runOption = True
+    if option == 1:
+        runOption = False
+    
     browser = p.chromium.launch(
-        headless=False
+        headless=runOption
     )
     page = browser.new_page()
     page.goto(comparaJogosUrl)
@@ -32,20 +41,8 @@ with sync_playwright() as p:
         #
         #
         gamePage = GamePage(p)
-        gamePage.check_view_more()
-        #
-        #
-        # 1.3 Para cada preço do jogo na listagem:
-        for j in range (gamePage.get_offers_cards().count()):
-            offerCard = gamePage.get_offers_cards().nth(j)
-            # 1.3.1 Extraia o nome da loja
-            gamePage.get_store_name(offerCard) # Printa nome da loja 
-            # 1.3.2 Extraia o valor no crédito
-            gamePage.get_credit_offer(offerCard) # Printa valor no crédito
-            # 1.3.3 Extraia o valor no pix
-            gamePage.get_pix_offer(offerCard)
+        gamePage.new_price_values()
+        gamePage.used_price_values()
         print("================")
-        # TODO: Fazer mesma coisa para jogos USADOS
-        # 2. Armazenar valores em uma planilha ou json
         p.close()
     browser.close()

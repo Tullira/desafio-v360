@@ -11,10 +11,10 @@ class GamePage:
     
     def get_offers_cards(self):
         return self.offersCards
-    
+
     def check_view_more(self):
-        if self.buttons.count() > 3:
-            viewMoreButton = self.offersSection.locator("button.cursor-pointer")
+        viewMoreButton = self.offersSection.locator("button.cursor-pointer")
+        if viewMoreButton.is_visible():
             viewMoreButton.click()
             time.sleep(2)
         return
@@ -44,3 +44,34 @@ class GamePage:
             pixValue = pixSection.locator("div.inline-block.w-14").inner_text()
         print("Pix: ", pixValue)
         return
+
+    def click_used_tab(self):
+        usedTab = self.offersSection.locator("button[tabindex='-1']")
+        usedTab.click()
+        time.sleep(1)
+        return
+    
+    def click_new_tab(self):
+        newTab = self.offersSection.locator("button[tabindex='0']")
+        newTab.click()
+        time.sleep(1)
+        return
+    
+    def scrape_prices(self):
+        self.check_view_more()
+        for j in range (self.get_offers_cards().count()):
+            offerCard = self.get_offers_cards().nth(j)
+            if offerCard.is_visible():
+                self.get_store_name(offerCard) # Printa nome da loja 
+                self.get_credit_offer(offerCard) # Printa valor no crédito
+                self.get_pix_offer(offerCard) # Printa valor no pix
+
+    def new_price_values(self):
+        print("---Novos---")
+        self.click_new_tab()
+        self.scrape_prices()
+
+    def used_price_values(self):
+        print("---Usados---")
+        self.click_used_tab()
+        self.scrape_prices()
