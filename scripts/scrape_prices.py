@@ -25,8 +25,10 @@ with sync_playwright() as p:
         p.goto(url)  # 2. Visite a página do jogo
         
         gamePage = GamePage(p)
-        gamePage.new_price_values() # 3. Extraia valores (pix e crédito) do jogo novo 
-        gamePage.used_price_values() # 4. Extraia valores (pix e crédito) do jogo usado
+        newValues = gamePage.new_price_values() # 3. Extraia valores (pix e crédito) do jogo novo 
+        usedValues = gamePage.used_price_values() # 4. Extraia valores (pix e crédito) do jogo usado
+        gamePrices = {gameName: {"new_values": newValues, "used_values": usedValues}}
+        games.append(gamePrices)
         print("================")
         p.close()
 
