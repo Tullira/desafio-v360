@@ -10,5 +10,8 @@ Estrutura de pastas:
 - scripts: Local onde o script de scraping é executado
 - utils: Utilitários que podem ser reutilizados no código
 
+Para instalar as dependÊncias necessárias, digite o seguinte comando no terminal:
+```pip install -r requirements.txt```
+
 Para rodar o script, digite o seguinte comando no terminal:
-python -m scripts.scrape_prices
+```python -m scripts.scrape_prices```
