@@ -66,7 +66,7 @@ class GamePage:
                 name = self.get_store_name(offerCard) # Printa nome da loja 
                 card, installment = self.get_credit_offer(offerCard) # Printa valor no crédito
                 pix = self.get_pix_offer(offerCard) # Printa valor no pix
-                priceObject = {name: {"card": card, "installment": installment, "pix": pix}}
+                priceObject = {"store": name, "card": card, "installment": installment, "pix": pix}
                 prices.append(priceObject)
         return prices
     
