@@ -31,6 +31,7 @@ with sync_playwright() as p:
         games.append(gamePrices)
         print("================")
         p.close()
+
     with open('reports/games.json', 'w', encoding='utf-8') as f:
-        json.dump(games, f, ensure_ascii=False, indent=4)
+        json.dump(games, f, ensure_ascii=False, indent=4) # Armazena resultado
     browser.close()
