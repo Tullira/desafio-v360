@@ -15,8 +15,8 @@ with sync_playwright() as p:
     page.goto(comparaJogosUrl)
     homePage = HomePage(page) # 0. Encontrar a seção de Populares da Semana
     games = []
-    for i in range(homePage.get_cards().count()):
-        card = homePage.get_cards().nth(i)
+    for i in range(homePage.get_popular_cards().count()):
+        card = homePage.get_popular_cards().nth(i)
         url = homePage.get_card_url(card)
         gameName = homePage.get_game_name(card) # 1. Extraia o nome do jogo
         p = browser.new_page(base_url=comparaJogosUrl)

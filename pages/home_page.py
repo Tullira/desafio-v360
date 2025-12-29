@@ -13,7 +13,7 @@ class HomePage:
         print(name)
         return name
     
-    def get_cards(self):
+    def get_popular_cards(self):
         return self.popularCards
 
     def get_card_url(self, card):
