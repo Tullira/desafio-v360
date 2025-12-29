@@ -11,7 +11,7 @@ class HomePage:
         element = card.locator(".vertical-wrap")
         name = element.text_content().strip()
         print(name)
-        return
+        return name
     
     def get_cards(self):
         return self.popularCards

@@ -22,7 +22,7 @@ class GamePage:
     def get_store_name(self, offerCard):
         storeName = offerCard.locator("div[title]").first.get_attribute("title")
         print(storeName)
-        return
+        return storeName
     
     def get_credit_offer(self, offerCard):
         # Extrair o valor no cartão
@@ -32,7 +32,7 @@ class GamePage:
         if installmentValue == "cartão": # Tratamento de dado caso não aceite dividir em parcelas
             installmentValue = f'1 x {cardValue}'
         print("Cartão:", cardValue, "  Parcela:", installmentValue)
-        return 
+        return (cardValue, installmentValue)
     
     def get_pix_offer(self, offerCard):
         pixValue = "Não aceita" # Deixar vazio como padrão para lojas que não aceitam
@@ -43,7 +43,7 @@ class GamePage:
             pixSection = pixLocator.locator("xpath=ancestor::div[contains(@class, 'text-green-800')]")
             pixValue = pixSection.locator("div.inline-block.w-14").inner_text()
         print("Pix: ", pixValue)
-        return
+        return pixValue
 
     def click_used_tab(self):
         usedTab = self.offersSection.locator("button[tabindex='-1']")
@@ -59,19 +59,25 @@ class GamePage:
     
     def scrape_prices(self):
         self.check_view_more()
+        prices = []
         for j in range (self.get_offers_cards().count()):
             offerCard = self.get_offers_cards().nth(j)
             if offerCard.is_visible():
-                self.get_store_name(offerCard) # Printa nome da loja 
-                self.get_credit_offer(offerCard) # Printa valor no crédito
-                self.get_pix_offer(offerCard) # Printa valor no pix
-
+                name = self.get_store_name(offerCard) # Printa nome da loja 
+                card, installment = self.get_credit_offer(offerCard) # Printa valor no crédito
+                pix = self.get_pix_offer(offerCard) # Printa valor no pix
+                priceObject = {"store": name, "card": card, "installment": installment, "pix": pix}
+                prices.append(priceObject)
+        return prices
+    
     def new_price_values(self):
         print("---Novos---")
         self.click_new_tab()
-        self.scrape_prices()
+        prices = self.scrape_prices()
+        return prices
 
     def used_price_values(self):
         print("---Usados---")
         self.click_used_tab()
-        self.scrape_prices()
+        prices = self.scrape_prices()
+        return prices
